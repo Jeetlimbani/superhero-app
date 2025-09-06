@@ -23,12 +23,18 @@ model User {
 }
 
 model Superhero {
-  id Int @id @default(autoincrement())
-  apiId Int @unique
-  name String
+  id        Int      @id @default(autoincrement())
+  apiId     Int      @unique
+  name      String
   alignment String?
-  power String?
-  imageUrl String?
+  intelligence String?
+  strength    String?
+  speed       String?
+  durability  String?
+  power       String?
+  combat      String?
+  imageUrl    String?
+
   favourites Favourite[]
 }
 

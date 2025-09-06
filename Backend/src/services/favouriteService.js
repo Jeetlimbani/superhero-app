@@ -2,6 +2,8 @@ import axios from "axios";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+const SUPERHERO_API_TOKEN = process.env.SUPERHERO_API_TOKEN;
+const BASE_URL = `https://www.superheroapi.com/api/${SUPERHERO_API_TOKEN}`;
 // Add favourite superhero
 export const addFavourite = async (userId, apiId) => {
   apiId = Number(apiId);

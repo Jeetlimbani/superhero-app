@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Container, CircularProgress } from '@mui/material';
-import { updateSuperhero } from '../api/superheroService.js';
+// AdminPanel.jsx
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField, Typography, Container, CircularProgress } from "@mui/material";
+import { useParams, useLocation } from "react-router-dom";
+import { updateSuperhero } from "../api/superheroService.js";
 
 const AdminPanel = () => {
-  const [heroId, setHeroId] = useState('');
-  const [formData, setFormData] = useState({ name: '', intelligence: '', strength: '' });
+  const { id } = useParams();              // superhero ID from URL
+  const location = useLocation();          // hero object passed from card
+  const heroData = location.state?.hero;   // optional hero object
+
+  const [formData, setFormData] = useState({
+    name: "",
+    intelligence: "",
+    strength: "",
+  });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  // Pre-fill form if hero data is passed
+  useEffect(() => {
+    if (heroData) {
+      setFormData({
+        name: heroData.name || "",
+        intelligence: heroData.intelligence || "",
+        strength: heroData.strength || "",
+      });
+    }
+  }, [heroData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,17 +36,13 @@ const AdminPanel = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
     try {
-      const response = await updateSuperhero(heroId, {
-        name: formData.name || undefined,
-        intelligence: formData.intelligence || undefined,
-        strength: formData.strength || undefined,
-      });
+      const response = await updateSuperhero(id, formData);
       setMessage(`Superhero ${response.data.name} updated successfully!`);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update superhero.');
+      setError(err.response?.data?.error || "Failed to update superhero.");
     } finally {
       setLoading(false);
     }
@@ -34,44 +50,43 @@ const AdminPanel = () => {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Update Superhero
-        </Typography>
+      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Typography component="h1" variant="h5">Update Superhero</Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
-            margin="normal" required fullWidth
-            label="Superhero ID" name="heroId"
-            value={heroId} onChange={(e) => setHeroId(e.target.value)}
+            margin="normal"
+            fullWidth
+            label="Superhero ID"
+            name="heroId"
+            value={id}
+            disabled
           />
           <TextField
-            margin="normal" fullWidth
-            label="Name" name="name"
-            value={formData.name} onChange={handleChange}
-            
+            margin="normal"
+            fullWidth
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
           />
           <TextField
-            margin="normal" fullWidth
-            label="Intelligence" name="intelligence" 
-            value={formData.intelligence} onChange={handleChange}
+            margin="normal"
+            fullWidth
+            label="Intelligence"
+            name="intelligence"
+            value={formData.intelligence}
+            onChange={handleChange}
           />
           <TextField
-            margin="normal" fullWidth
-            label="Strength" name="strength" 
-            value={formData.strength} onChange={handleChange}
+            margin="normal"
+            fullWidth
+            label="Strength"
+            name="strength"
+            value={formData.strength}
+            onChange={handleChange}
           />
-          <Button
-            type="submit" fullWidth variant="contained"
-            sx={{ mt: 3, mb: 2 }} disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Update'}
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Update"}
           </Button>
           {message && <Typography color="success.main">{message}</Typography>}
           {error && <Typography color="error">{error}</Typography>}

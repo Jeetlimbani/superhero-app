@@ -42,6 +42,7 @@ function App() {
               <Route path="/favourites" element={<PrivateRoute><Favourites /></PrivateRoute>} />
               <Route path="/superhero/:id" element={<PrivateRoute><SuperheroDetail  /></PrivateRoute>} />
               <Route path="/admin" element={<PrivateRoute requiredRole="admin"><AdminPanel /></PrivateRoute>} />
+              <Route path="/admin/:id" element={<PrivateRoute requiredRole="admin"><AdminPanel /></PrivateRoute>} />
             </Routes>
     
           </Box>

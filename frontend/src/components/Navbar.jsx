@@ -18,9 +18,6 @@ const Navbar = () => {
             <>
               <Button color="inherit" component={Link} to="/superheroes">Superheroes</Button>
               <Button color="inherit" component={Link} to="/favourites">Favourites</Button>
-              {user.role === 'admin' && (
-                <Button color="inherit" component={Link} to="/admin">Update Hero</Button>
-              )}
               <Button color="inherit" onClick={logout}>Logout</Button>
             </>
           ) : (

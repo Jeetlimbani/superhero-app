@@ -50,9 +50,9 @@ export const searchSuperheroes = async (name) => {
 };
 
 // Update superhero info (admin only)
-export const updateSuperhero = async (id, data) => {
+export const updateSuperhero = async (apiId, data) => {
   return await prisma.superhero.update({
-    where: { id: Number(id) },
+    where: { apiId: Number(apiId) }, 
     data,
   });
 };

@@ -71,7 +71,7 @@ Core Functionality
 
 🦸 Superhero Browser - Browse comprehensive superhero database
 📋 Detailed Profiles - Complete hero breakdown with biography, stats, and appearance
-⭐ Favorites Management - Add/remove heroes from personal favorites (persisted)
+⭐ Favorites Management - Add/view heroes from personal favorites (persisted)
 👥 Team Recommendations - AI-powered team suggestions based on hero attributes
 🔧 Admin Panel - Protected route for updating superhero information
 

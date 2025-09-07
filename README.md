@@ -16,21 +16,6 @@ A comprehensive web application to browse superheroes, view detailed profiles, m
 - **React Router** - Client-side routing
 - **localStorage** - Client-side caching
 
-## 📁 Project Structure
-superhero-app/
-├── backend/
-│   ├── src/
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── api/          # API interaction functions
-│   │   ├── components/   # Reusable UI components
-│   │   ├── context/      # Global state management
-│   │   ├── pages/        # Main application views
-│   │   └── routes/       # Routing logic
-│   └── Dockerfile
-├── docker-compose.yml
-└── README.md
 
 ## 🗄️ Database Setup
 

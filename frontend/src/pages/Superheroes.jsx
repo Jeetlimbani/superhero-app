@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Typography,
@@ -12,27 +12,25 @@ import {
   getFavourites,
 } from "../api/superheroService.js";
 import SuperheroCard from "../components/SuperheroCard.jsx";
+import AuthContext from "../context/AuthContext.jsx"; 
 
 const Superheroes = () => {
   const [superheroes, setSuperheroes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [favourites, setFavourites] = useState([]); // favourite apiIds
-  const [search, setSearch] = useState(""); // search input
+  const [favourites, setFavourites] = useState([]); 
+  const [search, setSearch] = useState(""); 
+  const { user } = useContext(AuthContext); // ✅ check role
 
   // ---- Load superheroes from backend ----
   useEffect(() => {
     const fetchHeroes = async () => {
       try {
-        // Check localStorage first
         let heroes = JSON.parse(localStorage.getItem("superheroes"));
 
         if (!heroes || heroes.length === 0) {
-          // Fetch from backend if not in cache
           const res = await getSuperheroes();
           heroes = res.data;
-
-          // Save to localStorage
           localStorage.setItem("superheroes", JSON.stringify(heroes));
         }
 
@@ -66,12 +64,10 @@ const Superheroes = () => {
   const handleAddFavourite = async (apiId) => {
     try {
       if (favourites.includes(apiId)) {
-        alert("Already in favourites!");
+        alert("This superhero is already in your favourites.");
         return;
       }
-
       await addFavourite(apiId);
-
       setFavourites((prev) => [...prev, apiId]);
       alert("Added to favourites!");
     } catch (err) {
@@ -84,7 +80,6 @@ const Superheroes = () => {
     hero.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // ---- Render ----
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
@@ -128,10 +123,11 @@ const Superheroes = () => {
         {filteredHeroes.length > 0 ? (
           filteredHeroes.map((hero) => (
             <SuperheroCard
-              key={hero.apiId} // use apiId as key
+              key={hero.apiId}
               hero={hero}
-              isFavourite={favourites.includes(hero.apiId)} // check favourites by apiId
+              isFavourite={favourites.includes(hero.apiId)}
               onAddFavourite={handleAddFavourite}
+              user={user} 
             />
           ))
         ) : (
